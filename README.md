@@ -13,8 +13,8 @@ La solución se basa en una arquitectura de microservicios desacoplada, donde la
 ### Ecosistema de Aplicaciones
 El código fuente de los componentes se mantiene en repositorios independientes para facilitar el escalado y la mantenibilidad:
 
-* **Frontend Service:** [demo-app](https://github.com/jmartinez-fusion/demo-app.git) - Host estático basado en Nginx Unprivileged que integra las reglas de Reverse Proxy.
-* **Backend Service:** [demo-backend](https://github.com/jmartinez-fusion/demo-backend.git) - API REST en Node.js encargada del procesamiento de datos.
+* **Frontend Service:** [demo-web](https://github.com/ssh-jmartinez/demo-web.git) - Host estático basado en Nginx Unprivileged que integra las reglas de Reverse Proxy.
+* **Backend Service:** [demo-backend](https://github.com/ssh-jmartinez/demo-backend.git) - API REST en Node.js encargada del procesamiento de datos.
 * **Database:** Instancia persistente de PostgreSQL gestionada mediante **Persistent Volume Claims (PVC)**.
 
 ---
@@ -38,6 +38,18 @@ El proceso de CI se ejecuta dentro del propio clúster mediante **Tekton Pipelin
 ### 4. Gestión Segura de Secretos (Sealed Secrets)
 Se implementó **Bitnami Sealed Secrets** para gestionar credenciales de base de datos de forma segura.
 * **Por qué:** Permite cifrar secretos de forma que solo el controlador dentro del clúster pueda descifrarlos. Esto hace posible almacenar información sensible en este repositorio público sin comprometer la seguridad.
+
+---
+
+## 🚀 Despliegue en un solo paso (One-Click Deployment)
+
+Gracias a la implementación del patrón **App-of-Apps**, la infraestructura es completamente autoprovisionable. No es necesario crear cada componente manualmente; el sistema está diseñado para el despliegue automático del ecosistema completo.
+
+Para desplegar toda la infraestructura (Frontend, Backend, Database, Secretos y Pipelines), solo es necesario ejecutar:
+
+```bash
+argocd app create -f argocd-apps/root-app.yaml
+```
 
 ---
 
