@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-backend
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-backend
+  template:
+    metadata:
+      labels:
+        app: demo-backend
+    spec:
+      containers:
+      - name: backend
+        image: image-registry.openshift-image-registry.svc:5000/demo-dev/demo-backend:latest
+        env:
+        - name: DB_HOST
+          value: "database-postgresql" # El nombre del Service de tu DB
+        - name: DB_NAME
+          value: "app_db"
+        - name: DB_USER
+          value: "app_user"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-backend # Este nombre es el que usará el frontend para conectar
+  namespace: demo
+spec:
+  selector:
+    app: demo-backend
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

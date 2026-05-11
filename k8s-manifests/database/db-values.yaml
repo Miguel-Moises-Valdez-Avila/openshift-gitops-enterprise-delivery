@@ -1,0 +1,42 @@
+global:
+  storageClass: "ssd-csi"
+
+image:
+  registry: public.ecr.aws
+  repository: bitnami/postgresql
+  tag: 16
+
+primary:
+  hostUsers: false
+
+  persistence:
+    size: 8Gi
+
+  podSecurityContext:
+    enabled: false
+    fsGroup: null
+
+  containerSecurityContext:
+    enabled: false
+    runAsUser: null
+    runAsNonRoot: true
+
+  initdb:
+    scripts:
+      setup.sql: |
+        CREATE TABLE visitors (
+          id SERIAL PRIMARY KEY,
+          name VARCHAR(50),
+          visited_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+
+volumePermissions:
+  enabled: false
+
+shmVolume:
+  enabled: false
+
+auth:
+  database: app_db
+  username: app_user
+  existingSecret: postgres-secret

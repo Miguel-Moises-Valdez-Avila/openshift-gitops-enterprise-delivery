@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: database-postgresql
+  namespace: openshift-gitops
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: demo-dev
+  sources:
+    - repoURL: https://charts.bitnami.com/bitnami
+      chart: postgresql
+      targetRevision: 15.5.2
+      helm:
+        valueFiles:
+          - $values/argocd-apps/k8s-manifests/database/values.yaml
+    - repoURL: https://github.com/ssh-jmartinez/ocp-fullstack-gitops-delivery.git
+      targetRevision: main
+      ref: values
