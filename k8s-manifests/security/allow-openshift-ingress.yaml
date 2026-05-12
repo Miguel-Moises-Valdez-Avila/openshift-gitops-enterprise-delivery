@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-openshift-ingress
+  namespace: demo
+spec:
+  podSelector:
+    matchLabels:
+      app: mi-web # El label de tu pod de Nginx/Frontend
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          network.openshift.io/policy-group: ingress
+    ports:
+    - protocol: TCP
+      port: 8080 # O el puerto que use tu contenedor de frontend
