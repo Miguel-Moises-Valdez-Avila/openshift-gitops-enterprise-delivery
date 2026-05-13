@@ -37,7 +37,7 @@ spec:
             memory: 128Mi
   strategy:
     canary:
-      canaryService: demo-backend # Apunta a tu service existente
+      canaryService: demo-backend-canary # Apunta a tu service existente
       stableService: demo-backend
       steps:
       - setWeight: 25   # 1 pod nuevo (V2), 3 pods viejos (V1)
@@ -59,5 +59,18 @@ spec:
   ports:
     - protocol: TCP
       name: web
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-backend-canary
+  namespace: demo
+spec:
+  selector:
+    app: demo-backend
+  ports:
+    - protocol: TCP
       port: 8080
       targetPort: 8080
