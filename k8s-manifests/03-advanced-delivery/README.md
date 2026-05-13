@@ -1,9 +1,9 @@
 # 🚀 Nivel 03: Advanced Delivery (Argo Rollouts)
 
+Este módulo representa la capa de **Despliegue Progresivo**. Aquí evolucionamos la infraestructura para utilizar estrategias de tipo **Canary**, permitiendo validar nuevas versiones con tráfico real antes de una promoción total.
+
 ![Arquitectura Canary](../../assets/canary-deploy.png) 
 *Esquema visual del flujo de tráfico y despliegue progresivo implementado en este módulo.*
-
-Este módulo representa la capa de **Despliegue Progresivo**. Aquí evolucionamos la infraestructura para utilizar estrategias de tipo **Canary**, permitiendo validar nuevas versiones con tráfico real antes de una promoción total.
 
 ## ⚠️ Prerrequisito Obligatorio
 
