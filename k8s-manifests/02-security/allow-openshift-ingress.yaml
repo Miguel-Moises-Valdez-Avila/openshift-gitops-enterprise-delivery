@@ -6,7 +6,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app: mi-web # El label de tu pod de Nginx/Frontend
+      app: demo-frontend # El label de tu pod de Nginx/Frontend
   ingress:
   - from:
     - namespaceSelector:

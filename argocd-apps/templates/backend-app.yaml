@@ -1,17 +1,19 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: backend-dev
-  namespace: openshift-gitops
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/ssh-jmartinez/ocp-fullstack-gitops-delivery.git
-    targetRevision: HEAD
-    path: k8s-manifests/backend
-  destination:
-    server: 'https://kubernetes.default.svc'
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+### SI VAS A USAR ESTO, COMENTA TODO EL ARCHIVO 'argocd-apps/templates/advance-delivery'
+
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: demo-backend
+#   namespace: openshift-gitops
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://github.com/ssh-jmartinez/ocp-fullstack-gitops-delivery.git
+#     targetRevision: HEAD
+#     path: k8s-manifests/01-core/backend
+#   destination:
+#     server: 'https://kubernetes.default.svc'
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true

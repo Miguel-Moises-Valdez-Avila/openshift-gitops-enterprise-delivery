@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mi-web-server
+  name: demo-frontend-server
   namespace: demo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mi-web
+      app: demo-frontend
   template:
     metadata:
       labels:
-        app: mi-web
+        app: demo-frontend
     spec:
       containers:
       - name: web
@@ -29,11 +29,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mi-web-service
+  name: demo-frontend-service
   namespace: demo
 spec:
   selector:
-    app: mi-web
+    app: demo-frontend
   ports:
     - protocol: TCP
       port: 80
@@ -42,11 +42,11 @@ spec:
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: mi-web-route
+  name: demo-frontend-route
   namespace: demo
 spec:
   to:
     kind: Service
-    name: mi-web-service
+    name: demo-frontend-service
   port:
     targetPort: 8080

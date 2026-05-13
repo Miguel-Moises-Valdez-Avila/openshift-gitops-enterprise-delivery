@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: backend-monitor
+  namespace: demo
+  labels:
+    team: devops # Etiqueta opcional para organizar
+spec:
+  selector:
+    matchLabels:
+      app: demo-backend # <--- MUY IMPORTANTE: Debe coincidir con el label de tu SERVICE
+  endpoints:
+  - port: web # <--- El nombre del puerto definido en tu Service (ej: 8080)
+    path: /metrics
+    interval: 30s

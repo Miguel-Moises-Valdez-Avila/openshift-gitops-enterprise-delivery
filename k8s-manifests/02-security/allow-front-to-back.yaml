@@ -11,7 +11,7 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-          app: mi-web
+          app: demo-frontend
     ports:
     - protocol: TCP
       port: 8080
