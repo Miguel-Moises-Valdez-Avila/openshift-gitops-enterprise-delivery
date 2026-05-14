@@ -1,0 +1,11 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: web-build-binding
+  namespace: demo
+spec:
+  params:
+    - name: gitrepo-url
+      value: $(body.repository.clone_url)
+    - name: gitrevision
+      value: $(body.after)

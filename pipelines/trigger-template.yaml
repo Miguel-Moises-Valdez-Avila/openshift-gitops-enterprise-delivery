@@ -1,0 +1,28 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: web-build-template
+  namespace: demo
+spec:
+  params:
+    - name: gitrepo-url
+      description: URL del repositorio
+    - name: gitrevision
+      description: El SHA del commit
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: build-and-push-run-
+      spec:
+        pipelineRef:
+          name: build-and-push-web
+        params:
+          - name: repo-url
+            value: $(tt.params.gitrepo-url)
+          - name: image-name
+            value: "image-registry.openshift-image-registry.svc:5000/demo/mi-app:latest"
+        workspaces:
+          - name: shared-data
+            persistentVolumeClaim:
+              claimName: mi-pvc-compartido

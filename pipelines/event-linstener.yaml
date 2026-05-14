@@ -1,0 +1,10 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: web-build-listener
+  namespace: demo
+spec:
+  serviceAccountName: pipeline # Asegúrate de que esta SA tenga permisos
+  triggers:
+    - bindingRef: web-build-binding
+      templateRef: web-build-template
