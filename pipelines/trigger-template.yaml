@@ -25,4 +25,4 @@ spec:
         workspaces:
           - name: shared-data
             persistentVolumeClaim:
-              claimName: mi-pvc-compartido
+              claimName: demo-build-workspace
