@@ -38,12 +38,12 @@ metadata:
   name: demo-frontend
   namespace: demo
 spec:
-  # Importante: Argo Rollouts modificará este selector dinámicamente
   selector:
-    app: demo-frontend
+    app: demo-frontend # Esto debe coincidir con la etiqueta en el template del Rollout
   ports:
   - port: 80
     targetPort: 8080
+    protocol: TCP
 ---
 apiVersion: v1
 kind: Service
@@ -52,7 +52,8 @@ metadata:
   namespace: demo
 spec:
   selector:
-    app: demo-frontend
+    app: demo-frontend # Esto debe coincidir con la etiqueta en el template del Rollout
   ports:
   - port: 80
     targetPort: 8080
+    protocol: TCP
