@@ -42,9 +42,10 @@ spec:
     app: demo-frontend
     # No pongas el hash aquí, deja que Argo Rollouts lo gestione
   ports:
-  - protocol: TCP
-    port: 80         # Puerto del Servicio
-    targetPort: 8080 # EL PUERTO QUE RESPONDIÓ BIEN (donde vive Nginx)
+  - name: http-web # <-- Agregamos este nombre
+    port: 80
+    targetPort: 8080
+    protocol: TCP
 ---
 apiVersion: v1
 kind: Service
@@ -53,9 +54,9 @@ metadata:
   namespace: demo
 spec:
   ports:
-  - port: 80
-    targetPort: 8080 # ¡IMPORTANTE! Debe ser el mismo que el estable
+  - name: http-web # <-- Agregamos este nombre
+    port: 80
+    targetPort: 8080
     protocol: TCP
-    name: http
   selector:
     app: demo-frontend # Argo Rollouts gestionará el hash aquí

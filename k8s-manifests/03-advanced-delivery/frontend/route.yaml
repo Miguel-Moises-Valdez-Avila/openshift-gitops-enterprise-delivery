@@ -8,13 +8,11 @@ spec:
   to:
     kind: Service
     name: demo-frontend
-    weight: 100
   alternateBackends:
   - kind: Service
     name: demo-frontend-canary
-    weight: 0
   port:
-    targetPort: 80 # Sigue apuntando al puerto 80 del Service
+    targetPort: http-web
   tls:
-    termination: edge # Esto añade el certificado SSL/TLS del cluster
-    insecureEdgeTerminationPolicy: Allow # Permite entrar por http y redirigir o permitir
+    termination: edge
+    insecureEdgeTerminationPolicy: Allow
