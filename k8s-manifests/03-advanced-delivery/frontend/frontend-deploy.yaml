@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: web-server
-        image: image-registry.openshift-image-registry.svc:5000/demo/mi-web:latest
+        image: image-registry.openshift-image-registry.svc:5000/demo/mi-app:latest
         ports:
         - containerPort: 8080
   strategy:
