@@ -4,7 +4,7 @@ metadata:
   name: security
   namespace: openshift-gitops
 spec:
-  project: default
+  project: demo
   source:
     repoURL: https://github.com/ssh-jmartinez/ocp-fullstack-gitops-delivery.git
     targetRevision: HEAD
