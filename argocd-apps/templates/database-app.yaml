@@ -11,6 +11,7 @@ spec:
     path: k8s-manifests/01-core/database
   destination:
     server: 'https://kubernetes.default.svc'
+    namespace: demo
   syncPolicy:
     automated:
       prune: true

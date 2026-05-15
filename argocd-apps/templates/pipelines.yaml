@@ -11,5 +11,6 @@ spec:
     path: pipelines/
   destination:
     server: https://kubernetes.default.svc
+    namespace: demo
   syncPolicy:
     automated: {prune: true, selfHeal: true}
