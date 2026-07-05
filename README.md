@@ -1,102 +1,78 @@
-# Enterprise GitOps & CI/CD Orchestration on OpenShift
+# Enterprise GitOps & CI/CD Orchestration on Red Hat OpenShift
 
-Este repositorio centraliza la orquestación, automatización y los manifiestos de infraestructura para una aplicación Full-Stack distribuida. El objetivo principal es demostrar un flujo de entrega continua (CI/CD) profesional utilizando herramientas nativas de Kubernetes en un entorno de **Red Hat OpenShift**.
+[![Platform](https://img.shields.io/badge/Platform-Red%20Hat%20OpenShift-red?style=flat-square&logo=redhatopenshift)](https://www.redhat.com/en/technologies/cloud-computing/openshift)
+[![GitOps](https://img.shields.io/badge/GitOps-Argo%20CD-orange?style=flat-square&logo=argocd)](https://argoproj.github.io/cd/)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-Tekton%20Pipelines-blue?style=flat-square&logo=tekton)](https://tekton.dev/)
 
----
-
-## 🏗️ Arquitectura del Sistema
-
-La solución se basa en una arquitectura de microservicios desacoplada, donde la seguridad, la conectividad y el aislamiento se gestionan a nivel de infraestructura:
-
-![Arquitectura Técnica del Proyecto](./assets/arquitectura.png)
-
-### Ecosistema de Aplicaciones
-El código fuente de los componentes se mantiene en repositorios independientes para facilitar el escalado y la mantenibilidad:
-
-* **Frontend Service:** [demo-web](https://github.com/ssh-jmartinez/demo-web.git) - Host estático basado en Nginx Unprivileged que integra las reglas de Reverse Proxy.
-* **Backend Service:** [demo-backend](https://github.com/ssh-jmartinez/demo-backend.git) - API REST en Node.js encargada del procesamiento de datos.
-* **Database:** Instancia persistente de PostgreSQL gestionada mediante **Persistent Volume Claims (PVC)**.
+**Maintained and Engineered by:** Miguel Moisés Valdez Ávila  
+*Role Perspective:* DevOps & Cloud Infrastructure Specialist
 
 ---
 
-## 🛡️ Seguridad Proactiva y Hardening de Red
+## 🚀 Project Overview
 
-A diferencia de despliegues convencionales, este proyecto implementa un modelo de **Seguridad de Confianza Cero (Zero Trust)** mediante **Kubernetes Network Policies**. La seguridad no reside solo en el código, sino en la infraestructura que lo rodea:
+This repository centralizes the enterprise-grade orchestration, automation, and declarative infrastructure manifests required to deploy a secure, resilient Full-Stack application. Built entirely upon Cloud-Native principles, the architecture leverages a strict **GitOps** operational model to eliminate configuration drift and achieve fully automated continuous delivery.
 
-### 1. Micro-segmentación de Red
-Se ha implementado un aislamiento granular para reducir la superficie de ataque:
-* **Default Deny All:** Se bloquea todo el tráfico entrante al namespace por defecto. Ningún servicio es accesible a menos que se defina una regla explícita.
-* **Aislamiento de Base de Datos:** La base de datos PostgreSQL solo acepta tráfico proveniente del Pod de Backend. Ni el Frontend ni otros servicios externos pueden establecer conexión directa con la capa de datos.
-* **Protección del Ingress:** El tráfico externo está restringido; solo se permite la entrada desde el Router oficial de OpenShift hacia los puertos específicos del Frontend.
-
-### 2. Gestión Segura de Secretos (Sealed Secrets)
-Se utilizó **Bitnami Sealed Secrets** para gestionar credenciales de forma profesional.
-* **Por qué:** Permite cifrar secretos de forma asimétrica para que solo el controlador del clúster pueda descifrarlos, posibilitando el almacenamiento seguro de credenciales en este repositorio Git sin riesgos de exposición.
+The core mission of this project is to showcase production-ready patterns for modern containerized workflows using enterprise Linux standards and Kubernetes frameworks.
 
 ---
 
-## ⚙️ Estrategia de Entrega Basada en GitOps
+## 🏗️ Core Architecture & GitOps Flow
 
-Se optó por un modelo de **Operaciones Basadas en Git (GitOps)** para garantizar que el clúster sea siempre un reflejo fiel del código fuente:
+The infrastructure is driven by a decentralized pipeline topology designed for multi-tenant isolation and maximum security compliance:
 
-### 1. Conciliación de Estado con Argo CD
-Toda la configuración reside en este repositorio utilizando el patrón **App-of-Apps**. Argo CD detecta cualquier desviación manual ("drift") y sincroniza el entorno automáticamente a su estado deseado.
-
-### 2. Punto de Entrada Unificado (Reverse Proxy)
-El Frontend actúa como un Proxy Inverso para el Backend. Esto simplifica el DNS, elimina la complejidad de configurar políticas de **CORS** en el código y permite exponer una única **Route** segura hacia el exterior.
-
-### 3. CI/CD Nativo con Tekton
-Los procesos de construcción se ejecutan dentro del clúster mediante **Tekton Pipelines** y **Buildah**, garantizando construcciones seguras, eficientes y sin necesidad de demonios de Docker externos.
+1. **Declarative State**: All Kubernetes and OpenShift native manifests are version-controlled in this repository.
+2. **Continuous Integration (CI)**: Managed via **Tekton Pipelines**, utilizing daemonless builder technology (**Buildah**) to compile container images without exposing privileged Docker sockets.
+3. **Continuous Delivery (CD)**: Orchestrated by **Argo CD**, which monitors this repository for semantic changes and automatically synchronizes the live cluster state.
+4. **Advanced Deployment**: Implements Progressive Delivery using **Argo Rollouts** to execute automated **Canary Deployments** and traffic splitting.
 
 ---
 
-## 🚀 Estructura del Repositorio
+## 🛠️ Key Technical Features
 
-Este repositorio separa la lógica de automatización de los recursos de Kubernetes para una gestión clara y escalable:
+<table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; text-align: left;">
+  <thead>
+    <tr style="background-color: #24292e; color: white;">
+      <th>Component / Layer</th>
+      <th>Cloud-Native Architecture Decision</th>
+      <th>Enterprise Rationale & Advantage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Container Building</strong></td>
+      <td>Buildah (Rootless / Daemonless)</td>
+      <td>Mitigates CVE risks by bypassing the Docker daemon requirement, enforcing strict compliance standards.</td>
+    </tr>
+    <tr>
+      <td><strong>Traffic Routing</strong></td>
+      <td>OpenShift Routes (Edge TLS Termination)</td>
+      <td>Optimizes performance by handling encryption/decryption at the router level before traffic reaches Pod services.</td>
+    </tr>
+    <tr>
+      <td><strong>Progressive Delivery</strong></td>
+      <td>Argo Rollouts (Canary Patterns)</td>
+      <td>Enables automated, real-time traffic splitting between Stable and Canary builds, minimizing blast radius during upgrades.</td>
+    </tr>
+    <tr>
+      <td><strong>Configuration Mgmt</strong></td>
+      <td>Kustomize Integration</td>
+      <td>Maintains dry (Don't Repeat Yourself) manifests by utilizing native base/overlay composition without heavy templating engine overhead.</td>
+    </tr>
+  </tbody>
+</table>
 
-* **`/k8s-manifests`**:
-    * **`/frontend` & `/backend`**: Manifiestos core de las aplicaciones (Deployments, Services).
-    * **`/database`**: Configuración de persistencia, valores de DB y secretos sellados.
-    * **`/security`**: Políticas de red (**NetworkPolicies**) para el blindaje del tráfico interno.
-* **`/argocd-apps`**: Orquestación de aplicaciones mediante Argo CD y gestión jerárquica de recursos.
-* **`/pipelines`**: Definiciones de Tasks y Pipelines de Tekton para la automatización del CI.
-
----
-
-## 💻 Tecnologías Core
-* **Orquestación:** Red Hat OpenShift
-* **GitOps:** Argo CD
-* **Seguridad de Red:** Kubernetes Network Policies (Zero Trust)
-* **CI Pipelines:** Tekton (Buildah)
-* **Gestión de Secretos:** Bitnami Sealed Secrets
-* **Stack:** Nginx (Unprivileged), Node.js, PostgreSQL
-
----
-
-## 🛠️ Despliegue (One-Click Deployment)
-
-Gracias al patrón **App-of-Apps**, toda la infraestructura (Frontend, Backend, DB y capas de Seguridad) se autoprovisiona de forma atómica:
-
-```bash
-argocd app create -f argocd-apps/root-app.yaml
-```
-
----
-
-## 🚀 Estructura del Repositorio de Orquestación
-
-Este repositorio está organizado para separar la lógica de automatización de los recursos de Kubernetes:
-
-* **`/k8s-manifests`**: Contiene los Deployments, Services, Routes y definiciones de **SealedSecrets**.
-* **`/argocd-apps`**: Definiciones de las aplicaciones de Argo CD (Root App y Templates) para la gestión del ciclo de vida jerárquico.
-* **`/pipelines`**: Definiciones de Tasks y Pipelines de Tekton para el flujo de CI.
+<br>
 
 ---
 
-## 💻 Tecnologías Core
-* **Orquestación:** Red Hat OpenShift
-* **GitOps:** Argo CD
-* **CI Pipelines:** Tekton
-* **Container Build:** Buildah
-* **Seguridad:** Bitnami Sealed Secrets
-* **Stack:** Nginx, Node.js, PostgreSQL
+## 📁 Repository Structure
+
+```text
+├── argocd-apps/           # Parent Application-of-Applications definitions for Argo CD
+├── assets/                # Architectural diagrams and static documentation resources
+├── k8s-manifests/         # Core Kubernetes & OpenShift declarations
+│   └── 03-advanced-delivery/
+│       ├── frontend/      # Stable/Canary Services, Routes, and Rollout specs
+│       └── backend/       # Core API deployment layers and data structures
+└── pipelines/             # Tekton task bundles, persistent volume claims, and pipeline runs
